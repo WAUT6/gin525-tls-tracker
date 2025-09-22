@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TLS Configuration Changes Detected</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .header { background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .critical { color: #dc3545; font-weight: bold; }
+        .high { color: #fd7e14; font-weight: bold; }
+        .medium { color: #ffc107; font-weight: bold; }
+        .low { color: #28a745; }
+        .change-item { border-left: 4px solid #007bff; padding: 10px; margin: 10px 0; background-color: #f8f9fa; }
+        .change-meta { font-size: 0.9em; color: #6c757d; margin-top: 5px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2 class="{{ priority|lower }}">🔒 TLS Configuration Changes Detected</h2>
+        <p><strong>Priority:</strong> {{ priority }}</p>
+        <p><strong>Total Changes:</strong> {{ total_changes }}</p>
+        <p><strong>Scan Job ID:</strong> {{ scan_job.id }}</p>
+        <p><strong>Scan Time:</strong> {{ scan_job.started_at }}</p>
+    </div>
+
+    {% if critical_changes %}
+    <h3 class="critical">🚨 Critical Changes ({{ critical_changes|length }})</h3>
+    {% for change in critical_changes %}
+    <div class="change-item">
+        <strong>{{ change.endpoint.domain }}:{{ change.endpoint.port }}</strong> - {{ change.get_change_type_display }}
+        <p>{{ change.description }}</p>
+        {% if change.previous_value and change.new_value %}
+        <p><strong>Previous:</strong> {{ change.previous_value }} → <strong>New:</strong> {{ change.new_value }}</p>
+        {% endif %}
+        <div class="change-meta">Detected: {{ change.detected_at }}</div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if high_changes %}
+    <h3 class="high">⚠️ High Priority Changes ({{ high_changes|length }})</h3>
+    {% for change in high_changes %}
+    <div class="change-item">
+        <strong>{{ change.endpoint.domain }}:{{ change.endpoint.port }}</strong> - {{ change.get_change_type_display }}
+        <p>{{ change.description }}</p>
+        {% if change.previous_value and change.new_value %}
+        <p><strong>Previous:</strong> {{ change.previous_value }} → <strong>New:</strong> {{ change.new_value }}</p>
+        {% endif %}
+        <div class="change-meta">Detected: {{ change.detected_at }}</div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if medium_changes %}
+    <h3 class="medium">📋 Medium Priority Changes ({{ medium_changes|length }})</h3>
+    {% for change in medium_changes %}
+    <div class="change-item">
+        <strong>{{ change.endpoint.domain }}:{{ change.endpoint.port }}</strong> - {{ change.get_change_type_display }}
+        <p>{{ change.description }}</p>
+        {% if change.previous_value and change.new_value %}
+        <p><strong>Previous:</strong> {{ change.previous_value }} → <strong>New:</strong> {{ change.new_value }}</p>
+        {% endif %}
+        <div class="change-meta">Detected: {{ change.detected_at }}</div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if low_changes %}
+    <h3 class="low">ℹ️ Low Priority Changes ({{ low_changes|length }})</h3>
+    {% for change in low_changes %}
+    <div class="change-item">
+        <strong>{{ change.endpoint.domain }}:{{ change.endpoint.port }}</strong> - {{ change.get_change_type_display }}
+        <p>{{ change.description }}</p>
+        {% if change.previous_value and change.new_value %}
+        <p><strong>Previous:</strong> {{ change.previous_value }} → <strong>New:</strong> {{ change.new_value }}</p>
+        {% endif %}
+        <div class="change-meta">Detected: {{ change.detected_at }}</div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <hr>
+    <p><small>This is an automated alert from the TLS Tracker system. Please review the changes and take appropriate action if necessary.</small></p>
+</body>
+</html>
