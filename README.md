@@ -2,6 +2,9 @@
 
 A Django-based system for monitoring TLS certificates and SSL configurations across multiple endpoints. The system provides automated scanning, change detection, and email notifications for SSL/TLS certificate changes and expirations.
 
+# GitHub Source Code URL
+**https://github.com/WAUT6/gin525-tls-tracker.git**
+
 ## Features
 
 - **Automated TLS Scanning**: Periodic scanning of TLS endpoints to monitor certificate status
